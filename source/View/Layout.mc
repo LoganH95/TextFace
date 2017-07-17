@@ -1,11 +1,9 @@
-using Toybox.WatchUi as Ui;
 using Toybox.Graphics as Gfx;
 using Toybox.System as Sys;
 using Toybox.Lang as Lang;
 using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Calendar;
 using Toybox.Application as App;
-
 
 class Layout {
 	hidden var type;
@@ -27,13 +25,11 @@ class Layout {
         setDate(); 
         batteryString = Lang.format("$1$%", [Sys.getSystemStats().battery.toNumber()]);
         
-        if (Sys.getDeviceSettings().screenShape == 2) {
+        if (Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_SEMI_ROUND) {
     		displaySemiRound(dc, width, height); 
-        }
-        else if (Sys.getDeviceSettings().screenShape == 1) {
+        } else if (Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND) {
         	displayRound(dc, width, height); 
-        }
-        else {
+        } else {
         	displaySquare(dc, width, height); 
         }        
     }
@@ -66,14 +62,11 @@ class Layout {
     	var date = Calendar.info(Time.now(), Time.FORMAT_LONG);
         if (date.day == 2 || date.day == 22) {
         	dateString= Lang.format("$1$ $2$nd, $3$", [date.month, date.day, date.year]); 
-        }
-        else if (date.day == 3 || date.day == 23) {
+        } else if (date.day == 3 || date.day == 23) {
         	dateString= Lang.format("$1$ $2$rd, $3$", [date.month, date.day, date.year]); 
-        }
-        else if (date.day == 1 || date.day == 21 || date.day == 31) {
+        } else if (date.day == 1 || date.day == 21 || date.day == 31) {
         	dateString= Lang.format("$1$ $2$st, $3$", [date.month, date.day, date.year]); 
-        }
-        else {
+        } else {
         	dateString= Lang.format("$1$ $2$th, $3$", [date.month, date.day, date.year]); 
         }
     }
@@ -81,13 +74,12 @@ class Layout {
     hidden function setCycle(hour) {
 	    if (hour < 12) {
         	cycle = "AM"; 
-        }
-        else {
+        } else {
         	cycle = "PM"; 
         }
     }
     
-    function battery(dc){
+    hidden function battery(dc){
     	dc.drawRectangle(width/2 - 8, 7, 16, 10);
     	dc.fillRectangle(width/2 + 8, 9, 3, 6);
     	var percent = Sys.getSystemStats().battery.toNumber().toDouble()/100.toDouble();
